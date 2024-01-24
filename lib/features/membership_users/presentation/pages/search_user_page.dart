@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/fetch_members/fetch_members_cubit.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/searching/searching_cubit.dart';
+import 'package:kidsplanetadmin/features/membership_users/presentation/pages/update_membership_page.dart';
 import 'package:kidsplanetadmin/utils/service_locator.dart';
 
 import '../../domain/entities/sub_member_entity.dart';
@@ -30,49 +31,49 @@ class _SearchUserPageState extends State<SearchUserPage> {
       child: Builder(builder: (context) {
         return Scaffold(
             body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: AppBar(
-                    title: TextFormField(
-                      onChanged: (text) {
-                        context.read<SearchingCubit>().filterBySearch(text);
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.blue.shade100,
-                        border: OutlineInputBorder(),
-                        hintText: 'Type User Name Or Phone number',
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                    ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: AppBar(
+                title: TextFormField(
+                  onChanged: (text) {
+                    context.read<SearchingCubit>().filterBySearch(text);
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.blue.shade100,
+                    border: OutlineInputBorder(),
+                    hintText: 'Type User Name Or Phone number',
+                    prefixIcon: Icon(Icons.search),
                   ),
                 ),
-                BlocBuilder<SearchingCubit, SearchingState>(
-                  builder: (context, state) {
-                    return Expanded(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: state.membersList.length,
-                        itemBuilder: (context, index) {
-                          final member = state.membersList[index];
-                          return SearchUserListTile(
-                            subMemberEntity: member,
-                            index: index,
-                          );
-                        },
-                        separatorBuilder: (c, i) {
-                          return Divider(
-                            indent: 50,
-                            endIndent: 50,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ));
+              ),
+            ),
+            BlocBuilder<SearchingCubit, SearchingState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: state.membersList.length,
+                    itemBuilder: (context, index) {
+                      final member = state.membersList[index];
+                      return SearchUserListTile(
+                        subMemberEntity: member,
+                        index: index,
+                      );
+                    },
+                    separatorBuilder: (c, i) {
+                      return Divider(
+                        indent: 50,
+                        endIndent: 50,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ));
       }),
     );
   }
@@ -107,6 +108,20 @@ class SearchUserListTile extends StatelessWidget {
         fontWeight: FontWeight.w500,
         color: Colors.black,
         fontSize: 14,
+      ),
+      trailing: IconButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => UpdateMembershipPage(
+                subMemberEntity: subMemberEntity,
+              ),
+            ),
+          );
+        },
+        icon: Icon(
+          Icons.update,
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:kidsplanetadmin/features/membership_users/presentation/manager/f
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/get_active_memberships/get_active_members_cubit.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/get_expired_memberships/get_exp_members_cubit.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/pages/add_member_page.dart';
+import 'package:kidsplanetadmin/features/membership_users/presentation/pages/update_membership_page.dart';
 import 'package:kidsplanetadmin/utils/service_locator.dart';
 import 'package:url_launcher/url_launcher.dart';
 

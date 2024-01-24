@@ -5,6 +5,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/fetch_members/fetch_members_cubit.dart';
 import 'package:kidsplanetadmin/features/membership_users/presentation/manager/insert_membership/insert_member_cubit.dart';
+import 'package:kidsplanetadmin/features/membership_users/presentation/manager/update_membership/update_membership_cubit.dart';
 import 'package:kidsplanetadmin/utils/service_locator.dart';
 
 class AddMemberPage extends StatefulWidget {
@@ -29,9 +30,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
 
   String _selectedLevel = "1 Month";
   DateTime _dateTime = DateTime.now();
+
   DateTime _upToDate = DateTime.now().add(Duration(days: 30));
 
-  void setUpToDate() {
+  void setUpToDate(DateTime selectedDate) {
+    _dateTime = selectedDate;
     if (_selectedLevel == "1 Month") {
       setState(() {
         _upToDate = _dateTime.add(Duration(days: 30));
@@ -83,10 +86,12 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     showDatePicker(
                       context: context,
                       firstDate: DateTime(2022),
-                      lastDate: _dateTime,
+                      lastDate: DateTime.now(),
                     ).then((dateValue) {
                       if (dateValue != null) {
-                        setUpToDate();
+                        setState(() {
+                          setUpToDate(dateValue);
+                        });
                       }
                     });
                   },
@@ -133,7 +138,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                         setState(
                           () {
                             _selectedLevel = val!;
-                            setUpToDate();
+                            setUpToDate(_dateTime);
                           },
                         );
                       },
@@ -161,7 +166,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: BlocConsumer<InsertMemberCubit, InsertMemberState>(
                   listener: (context, state) {
-                    if (state is InsertMemberLoading) {
+                    if (state is InsertMemberSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("User Added Successfully !"),
